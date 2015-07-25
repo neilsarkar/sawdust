@@ -9,9 +9,98 @@
   <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 </head>
 
-<body ng-app="app">
-  <div ng-view></div>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
+  <div id='content'></div>
+  <script type="text/jsx">
+    var Tasks = React.createClass({
+      getInitialState: function() {
+        return({data: []})
+      },
+      keyup: function(e, value) {
+        switch(e.key) {
+          case 'ArrowDown':
+            this.setState({data: this.state.data.concat({description: value})})
+            break;
+          default: return;
+        }
+        e.preventDefault();
+      },
+
+      render: function() {
+        var tasks = this.state.data.map(function(task) {
+          return (
+            <Task>{task.description}</Task>
+          )
+        })
+
+        return(
+          <div className="tasks">
+            <h1>Tasks</h1>
+            {tasks}
+            <TaskInput keyHandler={this.keyup}/>
+          </div>
+        )
+      }
+    })
+
+    var Task = React.createClass({
+      getInitialState: function() {
+        // set initial state of task
+        return({editing: true, name: ""})
+      },
+      edit: function() {
+        this.setState({editing: true, name: this.state.name})
+      },
+      keyup: function(e) {
+        console.log("called keyup")
+        if( e.key == 'Enter' ) {
+          var name = React.findDOMNode(this.refs.task).value;
+          this.setState({name: name, editing: false});
+        } else {
+          console.log(e.key);
+        }
+      },
+      render: function() {
+        console.log("rendering with", this.state);
+        if( this.state.editing ) {
+          return(
+            <div className="task s-editing">
+              <input ref="task" onKeyUp={this.keyup} placeholder="What do you have to do first?" />
+            </div>
+          )
+        } else {
+          return(
+            <div className="task">
+              {this.state.name}
+            </div>
+          )
+        }
+      }
+    })
+
+    var TaskInput = React.createClass({
+      keyup: function(e) {
+        var value = React.findDOMNode(this.refs.description).value;
+        this.props.keyHandler(e, value);
+      },
+      render: function() {
+        return(
+          <div className="task task-input">
+            <input ref="description" onKeyUp={this.keyup}/>
+          </div>
+        )
+      }
+    })
+
+    React.render(
+      <Task />,
+      document.querySelector('#content')
+    )
+  </script>
   <!-- build:js -->
   <!-- endbuild -->
 </body>
