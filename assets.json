@@ -1,9 +1,8 @@
 {
   "js": [
-    "bower_components/angular/angular.js",
-    "bower_components/angular-route/angular-route.js",
     "bower_components/underscore/underscore.js",
-    "app/js/modules.js",
+    "app/js/utils.js",
+    "app/js/**/*.jsx",
     "app/js/**/*.js"
   ],
   "css": [
