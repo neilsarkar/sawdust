@@ -16,83 +16,84 @@
 
   <div id='content'></div>
   <script type="text/jsx">
-    var Tasks = React.createClass({
-      getInitialState: function() {
-        return({data: []})
-      },
-      keyup: function(e, value) {
-        switch(e.key) {
-          case 'ArrowDown':
-            this.setState({data: this.state.data.concat({description: value})})
-            break;
-          default: return;
-        }
-        e.preventDefault();
-      },
+    function timeString(seconds) {
+      var minutes = parseInt(seconds / 60),
+          hours = parseInt(minutes / 60);
 
-      render: function() {
-        var tasks = this.state.data.map(function(task) {
-          return (
-            <Task>{task.description}</Task>
-          )
-        })
-
-        return(
-          <div className="tasks">
-            <h1>Tasks</h1>
-            {tasks}
-            <TaskInput keyHandler={this.keyup}/>
-          </div>
-        )
+      if( hours ) {
+        return pluralize(hours, "hour") + ", " + pluralize(minutes, "minute");
+      } else if( minutes ) {
+        return pluralize(minutes, "minute");
+      } else {
+        return seconds;
       }
-    })
+    }
+
+    function pluralize(amount, string) {
+      return amount == 1 ? "1 " + string : amount + " " + string + "s";
+    }
+
 
     var Task = React.createClass({
       getInitialState: function() {
-        // set initial state of task
-        return({editing: true, name: ""})
+        return({editing: true, name: "", seconds: 0})
       },
+
+      componentWillUnmount: function() {
+        if( this.timer ) { clearTimeout(this.timer); }
+      },
+
       edit: function() {
         this.setState({editing: true, name: this.state.name})
       },
+
       keyup: function(e) {
-        console.log("called keyup")
         if( e.key == 'Enter' ) {
           var name = React.findDOMNode(this.refs.task).value;
+          this.startTime = +new Date;
+          this.trackTime();
           this.setState({name: name, editing: false});
-        } else {
-          console.log(e.key);
         }
       },
+
+      togglePause: function() {
+        if( this.state.paused ) {
+          this.startTime = +new Date;
+          this.trackTime();
+        } else {
+          clearTimeout(this.timer);
+        }
+        this.setState({paused: !this.state.paused});
+      },
+
+      trackTime: function() {
+        var now = +new Date;
+
+        this.state.seconds += parseInt((now - this.startTime)/1000);
+        this.setState({timeElapsed: timeString(this.state.seconds)});
+        this.startTime = now;
+        this.timer = setTimeout(this.trackTime, 1000);
+      },
+
       render: function() {
-        console.log("rendering with", this.state);
         if( this.state.editing ) {
           return(
             <div className="task s-editing">
               <input ref="task" onKeyUp={this.keyup} placeholder="What do you have to do first?" />
+
             </div>
           )
         } else {
           return(
-            <div className="task">
-              {this.state.name}
+            <div className="task {this.state.paused ? 'paused' : ''}">
+              <div className="name" onClick={this.edit}>{this.state.name}</div>
+              <div className="time">{this.state.timeElapsed}</div>
+              <a onClick={this.bail}>Bail</a> {' '}
+              <a onClick={this.enter}>Enter</a> {' '}
+              <a onClick={this.togglePause}>{this.state.paused ? 'Resume' : 'Pause'}</a>
             </div>
           )
         }
-      }
-    })
-
-    var TaskInput = React.createClass({
-      keyup: function(e) {
-        var value = React.findDOMNode(this.refs.description).value;
-        this.props.keyHandler(e, value);
-      },
-      render: function() {
-        return(
-          <div className="task task-input">
-            <input ref="description" onKeyUp={this.keyup}/>
-          </div>
-        )
       }
     })
 
