@@ -1,6 +1,7 @@
 var Node = React.createClass({
   getInitialState: function() {
-    return({editing: false, name: this.props.children, seconds: 0})
+    var name = this.props.children;
+    return({editing: !name, name: name, seconds: 0})
   },
 
   componentDidMount: function() {
@@ -58,7 +59,6 @@ var Node = React.createClass({
         <div className={className}>
           <div className="name" onClick={this.edit}>{this.state.name}</div>
           <div className="time">{this.state.timeElapsed}</div>
-          <a onClick={this.pushTask}>Push</a> {' '}
           <a onClick={this.togglePause}>{this.state.paused ? '|>' : '||'}</a>
         </div>
       )

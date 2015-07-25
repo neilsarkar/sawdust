@@ -1,0 +1,17 @@
+.stack {
+  font-size: 333%;
+  .pop {
+    position: absolute;
+    top: 1%;
+    left: 50%;
+    -webkit-transform: translate(-50%, 0);
+    cursor: pointer;
+  }
+  .push {
+    position: absolute;
+    bottom: 1%;
+    left: 50%;
+    -webkit-transform: translate(-50%, 0);
+    cursor: pointer;
+  }
+}
