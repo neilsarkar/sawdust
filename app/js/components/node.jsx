@@ -1,7 +1,11 @@
 var Node = React.createClass({
   getInitialState: function() {
     var name = this.props.children;
-    return({editing: !name, name: name, seconds: this.props.time || 0})
+    return({editing: !name, name: name, time: this.props.time || 0})
+  },
+
+  componentDidMount: function() {
+    if( this.state.name ) { this.trackTime(); }
   },
 
   componentWillUnmount: function() {
@@ -39,9 +43,9 @@ var Node = React.createClass({
     this.timer && clearTimeout(this.timer);
     var now = +new Date;
 
-    this.state.seconds++;
-    this.setState({timeElapsed: window.utils.timeString(this.state.seconds)});
-    this.props.update({time: this.state.seconds});
+    this.state.time++;
+    this.setState({timeElapsed: window.utils.timeString(this.state.time)});
+    this.props.update({time: this.state.time});
     this.timer = setTimeout(this.trackTime, 1000);
   },
 
