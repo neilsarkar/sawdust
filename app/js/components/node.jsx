@@ -6,6 +6,7 @@ var Node = React.createClass({
 
   componentDidMount: function() {
     if( this.state.name ) { this.trackTime(); }
+    else { this.focus() }
   },
 
   componentWillUnmount: function() {
@@ -13,12 +14,14 @@ var Node = React.createClass({
   },
 
   edit: function() {
-    this.setState({editing: true}, function() {
-      var input = this.refs.task.getDOMNode();
-      input.value = this.state.name;
-      input.focus();
-      input.select();
-    });
+    this.setState({editing: true}, this.focus);
+  },
+
+  focus: function() {
+    var input = this.refs.task.getDOMNode();
+    input.value = this.state.name || '';
+    input.focus();
+    input.select();
   },
 
   keyup: function(e) {
@@ -53,7 +56,7 @@ var Node = React.createClass({
     if( this.state.editing ) {
       return(
         <div className="node s-editing">
-          <input ref="task" onKeyUp={this.keyup} placeholder="What do you have to do first?" autofocus="cool"/>
+          <input className="mousetrap" ref="task" onKeyUp={this.keyup} placeholder="What do you have to do first?" autofocus="cool"/>
         </div>
       )
     } else {

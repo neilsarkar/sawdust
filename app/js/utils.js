@@ -15,9 +15,7 @@
     }
   }
 
-  function pluralize() {
-    function pluralize(amount, string) {
-      return amount == 1 ? "1 " + string : amount + " " + string + "s";
-    }
+  function pluralize(amount, string) {
+    return amount == 1 ? "1 " + string : amount + " " + string + "s";
   }
 })()

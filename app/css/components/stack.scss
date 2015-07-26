@@ -1,17 +1,17 @@
 .stack {
   font-size: 333%;
-  .pop {
+  .stack-action {
     position: absolute;
-    top: 1%;
     left: 50%;
     -webkit-transform: translate(-50%, 0);
     cursor: pointer;
+    font-size: 50%;
+    text-align: center;
+  }
+  .pop {
+    top: 1%;
   }
   .push {
-    position: absolute;
     bottom: 1%;
-    left: 50%;
-    -webkit-transform: translate(-50%, 0);
-    cursor: pointer;
   }
 }

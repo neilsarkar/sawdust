@@ -3,6 +3,7 @@
     "bower_components/underscore/underscore.js",
     "bower_components/react/react.js",
     "bower_components/node-uuid/uuid.js",
+    "bower_components/mousetrap/mousetrap.js",
     "app/js/utils.js",
     "app/js/**/*.jsx",
     "app/js/**/*.js"
