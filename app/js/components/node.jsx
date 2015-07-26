@@ -5,8 +5,7 @@ var Node = React.createClass({
   },
 
   componentDidMount: function() {
-    this.startTime = +new Date;
-    this.trackTime();
+    if( this.state.name ) { this.trackTime() };
   },
 
   componentWillUnmount: function() {
@@ -20,15 +19,14 @@ var Node = React.createClass({
   keyup: function(e) {
     if( e.key == 'Enter' ) {
       var name = React.findDOMNode(this.refs.task).value;
-      this.startTime = +new Date;
-      this.trackTime();
       this.setState({name: name, editing: false});
+      this.props.update({name: name});
+      this.trackTime();
     }
   },
 
   togglePause: function() {
     if( this.state.paused ) {
-      this.startTime = +new Date;
       this.trackTime();
     } else {
       clearTimeout(this.timer);
@@ -37,11 +35,12 @@ var Node = React.createClass({
   },
 
   trackTime: function() {
+    this.timer && clearTimeout(this.timer);
     var now = +new Date;
 
-    this.state.seconds += parseInt((now - this.startTime)/1000);
+    this.state.seconds++;
     this.setState({timeElapsed: window.utils.timeString(this.state.seconds)});
-    this.startTime = now;
+    this.props.update({time: this.state.seconds});
     this.timer = setTimeout(this.trackTime, 1000);
   },
 
@@ -59,7 +58,6 @@ var Node = React.createClass({
         <div className={className}>
           <div className="name" onClick={this.edit}>{this.state.name}</div>
           <div className="time">{this.state.timeElapsed}</div>
-          <a onClick={this.togglePause}>{this.state.paused ? '|>' : '||'}</a>
         </div>
       )
     }

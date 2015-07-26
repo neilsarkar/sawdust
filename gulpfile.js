@@ -49,6 +49,7 @@ gulp.task('fonts', function() {
 gulp.task('js', function() {
   var stream = gulp.src(paths.js).
     pipe(plugins.react()).
+    on('error', function(err) { console.error("JSX compile error:" + err.message); this.emit('end'); }).
     pipe(plugins.concat('application.js'));
 
   if( !isDevelopment ) {

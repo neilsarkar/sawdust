@@ -2,6 +2,7 @@
   "js": [
     "bower_components/underscore/underscore.js",
     "bower_components/react/react.js",
+    "bower_components/node-uuid/uuid.js",
     "app/js/utils.js",
     "app/js/**/*.jsx",
     "app/js/**/*.js"

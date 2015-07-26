@@ -1,10 +1,12 @@
 var Stack = React.createClass({
   getInitialState: function() {
-    return {nodes: [{name: "cool"}, {name: "nice"}]} ;
+    return {
+      nodes: [{}]
+    };
   },
 
   push: function() {
-    this.state.nodes.push({});
+    this.state.nodes.push({uuid: uuid.v1()});
     this.setState({nodes: this.state.nodes});
   },
 
@@ -13,15 +15,20 @@ var Stack = React.createClass({
     this.setState({nodes: this.state.nodes});
   },
 
+  update: function(properties) {
+    _.extend(this.state.nodes[this.state.nodes.length-1], properties);
+  },
+
   render: function() {
     var node = this.state.nodes.slice(-1)[0];
-    if( node ) { node = <Node>{node.name}</Node> }
+    if( node ) {
+      node = <Node key={node.uuid} update={this.update}>{node.name}</Node>
+    }
     return (
       <div className="stack">
         <i className="pop fa fa-long-arrow-up" onClick={this.pop}></i>
         {node}
         <i className="push fa fa-long-arrow-down" onClick={this.push}></i>
-        <div className=""></div>
       </div>
     )
   }
