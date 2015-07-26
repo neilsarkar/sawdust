@@ -1,11 +1,7 @@
 var Node = React.createClass({
   getInitialState: function() {
     var name = this.props.children;
-    return({editing: !name, name: name, seconds: 0})
-  },
-
-  componentDidMount: function() {
-    if( this.state.name ) { this.trackTime() };
+    return({editing: !name, name: name, seconds: this.props.time || 0})
   },
 
   componentWillUnmount: function() {
