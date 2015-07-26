@@ -13,12 +13,17 @@ var Node = React.createClass({
   },
 
   edit: function() {
-    this.setState({editing: true, name: this.state.name})
+    this.setState({editing: true}, function() {
+      var input = this.refs.task.getDOMNode();
+      input.value = this.state.name;
+      input.focus();
+      input.select();
+    });
   },
 
   keyup: function(e) {
     if( e.key == 'Enter' ) {
-      var name = React.findDOMNode(this.refs.task).value;
+      var name = this.refs.task.getDOMNode().value;
       this.setState({name: name, editing: false});
       this.props.update({name: name});
       this.trackTime();
@@ -48,7 +53,7 @@ var Node = React.createClass({
     if( this.state.editing ) {
       return(
         <div className="node s-editing">
-          <input ref="task" onKeyUp={this.keyup} placeholder="What do you have to do first?" />
+          <input ref="task" onKeyUp={this.keyup} placeholder="What do you have to do first?" autofocus="cool"/>
         </div>
       )
     } else {
