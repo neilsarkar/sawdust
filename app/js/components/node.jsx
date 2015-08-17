@@ -56,7 +56,7 @@ var Node = React.createClass({
     if( this.state.editing ) {
       return(
         <div className="node s-editing">
-          <input className="mousetrap" ref="task" onKeyUp={this.keyup} placeholder="What do you have to do first?" autofocus="cool"/>
+          <input className="mousetrap" ref="task" onKeyUp={this.keyup} placeholder="What are you trying to do?" autofocus="cool"/>
         </div>
       )
     } else {

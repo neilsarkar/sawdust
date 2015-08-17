@@ -2,8 +2,15 @@ var Stack = React.createClass({
   getInitialState: function() {
     var storedNodes = window.localStorage.getItem('stack');
 
+    try {
+      storedNodes = JSON.parse(storedNodes);
+    } catch(err) {
+      console.error(err);
+      storedNodes = null;
+    }
+
     return {
-      nodes: (storedNodes && JSON.parse(storedNodes)) || [{}]
+      nodes: storedNodes || [{}]
     };
   },
 
@@ -53,7 +60,7 @@ var Stack = React.createClass({
     return (
       <div className="stack">
         {goalView}
-        <div style={{display: !!node.name && !!parent ? 'block' : 'none'}} className="pop stack-action" onClick={this.pop}>
+        <div style={{display: !!parent ? 'block' : 'none'}} className="pop stack-action" onClick={this.pop}>
           <i className="fa fa-long-arrow-up"></i>
           <br />
           {parent && parent.name}
@@ -64,6 +71,7 @@ var Stack = React.createClass({
         </div>
 
         <Debug nodes={this.state.nodes}></Debug>
+        <Sawdust></Sawdust>
       </div>
     )
   }

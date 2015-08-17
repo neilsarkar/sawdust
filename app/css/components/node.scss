@@ -3,7 +3,8 @@
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
-  width: 75%;
+  width: 70%;
+  min-width: 350px;
   text-align: center;
   -webkit-user-select: none;
   ::-webkit-input-placeholder {
@@ -24,7 +25,7 @@
     font-size: 50%;
   }
   .name:hover {
-    background-color: #ddd;
+    background-color: #efefef;
     cursor: text;
   }
   a {
